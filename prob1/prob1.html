@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="prob1.css">
+
+<body>
+    <div class="container">
+        <h1>Weather Dashboard</h1>
+        <form id="city-form">
+            <input type="text" id="city-input" placeholder="Enter city name" required>
+            <button type="submit">Get Weather</button>
+        </form>
+        <div id="weather-info"></div>
+    </div>
+    <script>
+        document.getElementById('city-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const cityName = document.getElementById('city-input').value;
+            getWeather(cityName);
+        });
+        
+        async function getWeather(cityName) {
+            const apiKey = '5cf9db8b91c54abea4d175012242703';
+            const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityName}&aqi=no`;
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+        
+                if (response.ok) {
+                    displayWeather(data);
+                } else {
+                    throw new Error(data.error.message);
+                }
+            } catch (error) {
+                console.error('Error fetching weather:', error.message);
+                alert('Error fetching weather. Please try again.');
+            }
+        }
+        
+        function displayWeather(data) {
+            const weatherInfo = document.getElementById('weather-info');
+            weatherInfo.innerHTML = `
+                <h2>${data.location.name}, ${data.location.country}</h2>
+                <p>Current Time: ${data.location.localtime}</p>
+                <p>Temperature: ${data.current.temp_f}°F</p>
+                <p>Condition: ${data.current.condition.text}</p>
+                <p>Humidity: ${data.current.humidity}%</p>
+            `;
+        }
+    </script>   
+</body>
