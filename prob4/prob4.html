@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="prob4.css">
+
+<body>
+    <div class="container">
+        <h1>User Registration Form</h1>
+        <form id="registration-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <span class="error" id="username-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <span class="error" id="email-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <span class="error" id="password-error"></span>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    <script>
+        const registrationForm = document.getElementById('registration-form');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            validateForm();
+        });
+
+        function validateForm() {
+            const usernameValue = usernameInput.value.trim();
+            const emailValue = emailInput.value.trim();
+            const passwordValue = passwordInput.value;
+
+            let isValid = true;
+
+            if (usernameValue.length < 6) {
+                setErrorFor(usernameInput, 'Username must be at least 6 characters');
+                isValid = false;
+            } else {
+                setSuccessFor(usernameInput);
+            }
+
+            if (!isValidEmail(emailValue)) {
+                setErrorFor(emailInput, 'Email is not valid');
+                isValid = false;
+            } else {
+                setSuccessFor(emailInput);
+            }
+
+            if (passwordValue.length < 8 || !/[A-Z]/.test(passwordValue) || !/\d/.test(passwordValue)) {
+                setErrorFor(passwordInput, 'Password must be at least 8 characters long and contain at least one capital letter and one number');
+                isValid = false;
+            } else {
+                setSuccessFor(passwordInput);
+            }
+
+            if (isValid) {
+                alert('Registration successful!');
+            }
+        }
+
+        function setErrorFor(input, message) {
+            const errorSpan = input.nextElementSibling;
+            errorSpan.textContent = message;
+            input.classList.add('error-input');
+        }
+
+        function setSuccessFor(input) {
+            const errorSpan = input.nextElementSibling;
+            errorSpan.textContent = '';
+            input.classList.remove('error-input');
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+    </script>
+</body>
+</html>
