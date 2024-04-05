@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="prob5.css">
+
+<body>
+    <div class="container">
+        <h1>JavaScript Animation</h1>
+        <div id="box"></div>
+        <button id="moveButton">Move</button>
+    </div>
+    <script>
+        const box = document.getElementById('box');
+        const moveButton = document.getElementById('moveButton');
+        let isMoving = false;
+
+        moveButton.addEventListener('click', function() {
+            if (isMoving) {
+                moveBack();
+            } else {
+                moveForward();
+            }
+        });
+
+        function moveForward() {
+            box.style.transform = 'translateX(400px)';
+            isMoving = true;
+        }
+
+        function moveBack() {
+            box.style.transform = 'translateX(0)';
+            isMoving = false;
+        }
+    </script>
+</body>
+</html>
