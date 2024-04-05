@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="prob3.css">
+
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        <form id="todo-form">
+            <input type="text" id="todo-title" placeholder="Enter task title" required>
+            <input type="text" id="todo-details" placeholder="Enter task details">
+            <button type="submit">Add Task</button>
+        </form>
+        <ul id="todo-list"></ul>
+    </div>
+    <script>
+        const todoForm = document.getElementById('todo-form');
+        const todoTitleInput = document.getElementById('todo-title');
+        const todoDetailsInput = document.getElementById('todo-details');
+        const todoList = document.getElementById('todo-list');
+
+        todoForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            addTodo();
+        });
+
+        function addTodo() {
+            const todoTitle = todoTitleInput.value.trim();
+            const todoDetails = todoDetailsInput.value.trim();
+
+            if (todoTitle === '') return;
+
+            const todoItem = createTodoItem(todoTitle, todoDetails);
+            todoList.appendChild(todoItem);
+
+            todoTitleInput.value = '';
+            todoDetailsInput.value = '';
+        }
+
+        function createTodoItem(title, details) {
+            const li = document.createElement('li');
+            const span = document.createElement('span');
+            span.textContent = title;
+            li.appendChild(span);
+
+            if (details) {
+                const detailsSpan = document.createElement('span');
+                detailsSpan.textContent = ` - ${details}`;
+                li.appendChild(detailsSpan);
+            }
+
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.addEventListener('click', function() {
+                editTodoItem(li, span);
+            });
+            li.appendChild(editButton);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', function() {
+                deleteTodoItem(li);
+            });
+            li.appendChild(deleteButton);
+
+            return li;
+        }
+
+        function editTodoItem(li, span) {
+            const newTitle = prompt('Enter new title:', span.textContent);
+            if (newTitle === null || newTitle.trim() === '') return;
+
+            span.textContent = newTitle.trim();
+        }
+
+        function deleteTodoItem(li) {
+            li.remove();
+        }
+    </script>
+</body>
+</html>
